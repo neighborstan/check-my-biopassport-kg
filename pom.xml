@@ -14,7 +14,8 @@
 	<name>check-my-biopassport-kg</name>
 	<description>A Telegram bot for checking the status of Russian biometric passport readiness when submitting documents in Kyrgyzstan.</description>
 	<properties>
-		<java.version>18</java.version>
+		<java.version>17</java.version>
+		<unirest.version>3.14.1</unirest.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -40,6 +41,11 @@
 			<version>6.3.0</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.konghq</groupId>
+			<artifactId>unirest-java</artifactId>
+			<version>${unirest.version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>
