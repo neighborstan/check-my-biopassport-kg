@@ -1,5 +1,6 @@
 package art.evalevi.telegrambot.statuscheckbot.bot;
 
+
 import art.evalevi.telegrambot.statuscheckbot.dto.Passport;
 import art.evalevi.telegrambot.statuscheckbot.service.PassportService;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +11,6 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
@@ -70,6 +70,7 @@ public class PassportStatusTelegramBot extends TelegramLongPollingBot {
                 sendPassportStatusMessage(chatId, passport.get());
             } else {
                 sendWarningMessage(chatId);
+
             }
         }
 
