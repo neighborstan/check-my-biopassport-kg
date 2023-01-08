@@ -15,6 +15,10 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Optional;
+import java.util.regex.Pattern;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -36,6 +40,7 @@ public class PassportStatusTelegramBot extends TelegramLongPollingBot {
             "\n\nЧтобы получить информацию о текущем статусе биометрического загранпаспорта РФ отправьте короткий номер " +
             "заявления, не более 8 цифр или полный идентификатор заявления - 25 цифр\n\nВыберите город, где было" +
             " подано заявление</code>";
+
     private static final String PASSPORT_STATUS_TEXT = """
             <code>Дата запроса::%s (МСК)
                         
@@ -220,6 +225,67 @@ public class PassportStatusTelegramBot extends TelegramLongPollingBot {
         } catch (TelegramApiException e) {
             log.error("Error occurred: " + e.getMessage());
         }
+    }
+
+    private Boolean isUID(String id) {
+        String uidRegex = "^\\d{25}$";
+        Pattern pattern = Pattern.compile(uidRegex);
+        return pattern.matcher(id).matches();
+    }
+
+    private Boolean isID(String id) {
+        String idRegex = "^\\d{1,8}$";
+        Pattern pattern = Pattern.compile(idRegex);
+        return pattern.matcher(id).matches();
+    }
+
+    private Optional<Passport> receivePassportData(String text, String cityCode) {
+        Optional<Passport> passport = Optional.empty();
+
+        if (isID(text)) {
+            Passport[] passports = passportService.getPassportsByIdSync(text, cityCode);
+            log.info(String.format("Reply to request by ID: %s", text));
+            passport = passports.length > 0 ? Optional.ofNullable(passports[0]) : Optional.empty();
+        } else if (isUID(text)) {
+            passport = Optional.ofNullable(passportService.getPassportByUIDSync(text));
+            log.info(String.format("Reply to request by UID: %s", text));
+        }
+        return passport;
+    }
+
+    private void sendPassportStatusMessage(Long chatId, Passport passport) {
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+
+        SendMessage message = new SendMessage();
+        String sendText = String.format(PASSPORT_STATUS_TEXT,
+                now.format(formatter),
+                passport.getUid(),
+                passport.getReceptionDate(),
+                passport.getPassportStatus().getName(),
+                passport.getInternalStatus().getName(),
+                passport.getInternalStatus().getPercent());
+
+        message.setChatId(chatId);
+        message.setText(sendText);
+
+        executeMessage(message);
+    }
+
+    private void executeMessage(SendMessage message) {
+        message.enableHtml(true);
+        try {
+            execute(message);
+        } catch (TelegramApiException e) {
+            log.error("Error occurred: " + e.getMessage());
+        }
+    }
+
+    private void sendWarningMessage(Long chatId) {
+        SendMessage message = new SendMessage();
+        message.setChatId(String.valueOf(chatId));
+        message.setText(NOT_FOUND_WARNING_TEXT);
+        executeMessage(message);
     }
 
     private Boolean isUID(String id) {
