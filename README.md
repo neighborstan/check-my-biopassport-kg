@@ -1,6 +1,6 @@
 # Check My Biopassport (KG) 🇰🇬
 
-A Telegram bot for checking the status of Russian biometric passport readiness when submitting documents in Kyrgyzstan.
+A [Telegram bot](https://t.me/check_biopassport_KG_bot) for checking the status of Russian biometric passport readiness when submitting documents in Kyrgyzstan.
 
 ## How it works
 
@@ -16,6 +16,12 @@ The response includes the following information:
 - Main status
 - Internal status
 - Readiness
+
+## Demo
+
+![A Telegram bot for checking the status of Russian biometric passport readiness when submitting documents in Kyrgyzstan.](/home/stan/IdeaProjects/check-my-biopassport-kg/readme-img/bot-demo.gif "Demonstration work")
+
+Direct link to the bot: [https://t.me/check_biopassport_KG_bot](https://t.me/check_biopassport_KG_bot)
 
 ## Deployment
 
