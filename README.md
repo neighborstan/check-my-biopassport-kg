@@ -19,7 +19,7 @@ The response includes the following information:
 
 ## Demo
 
-![A Telegram bot for checking the status of Russian biometric passport readiness when submitting documents in Kyrgyzstan.](/home/stan/IdeaProjects/check-my-biopassport-kg/readme-img/bot-demo.gif "Demonstration work")
+![A Telegram bot for checking the status of Russian biometric passport readiness when submitting documents in Kyrgyzstan.](./readme-img/bot-demo.gif "Demonstration work")
 
 Direct link to the bot: [https://t.me/check_biopassport_KG_bot](https://t.me/check_biopassport_KG_bot)
 
