@@ -1,4 +1,7 @@
-# Check My Biopassport (KG) 🇰🇬
+<img src="readme-img/bot-banner.png" width="100%"/>
+
+![Telegram Bot](https://img.shields.io/badge/telegram-bot-blue)
+![GitHub](https://img.shields.io/github/license/neighborstan/check-my-biopassport-kg?color=red)
 
 A [Telegram bot](https://t.me/check_biopassport_KG_bot) for checking the status of Russian biometric passport readiness when submitting documents in Kyrgyzstan.
 
