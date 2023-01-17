@@ -1,6 +1,5 @@
 package art.evalevi.telegrambot.statuscheckbot.service;
 
-
 import art.evalevi.telegrambot.statuscheckbot.dto.Passport;
 import kong.unirest.GenericType;
 import kong.unirest.Unirest;
@@ -22,13 +21,6 @@ public class PassportService {
 
     @Value("${url.target.uid}")
     private String uidUrlTemplate;
-
-    @Value("${url.target.bishkek_code}")
-    private String bishkekCode;
-
-    @Value("${url.target.osh_code}")
-    private String oshCode;
-
 
 
     public Passport[] getPassportsByIdSync(final String id, String cityCode) {
