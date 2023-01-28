@@ -16,8 +16,8 @@ public class NumberCommand implements Command {
     private static final String PASSPORT_STATUS_TEXT = """
             <code>Дата запроса::%s (МСК)
                         
-            UID заявления::%s
-            Дата подачи заявления::%s
+            UID::%s
+            Дата подачи::%s
             Основной статус::%s
             Внутренний статус::%s
             Готовность::%s&#37;</code>

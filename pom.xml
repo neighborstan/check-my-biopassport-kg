@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>art.evalevi.telegrambot</groupId>
 	<artifactId>check-my-biopassport-kg</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 	<name>check-my-biopassport-kg</name>
 	<description>A Telegram bot for checking the status of Russian biometric passport readiness when submitting documents in Kyrgyzstan.</description>
 	<properties>

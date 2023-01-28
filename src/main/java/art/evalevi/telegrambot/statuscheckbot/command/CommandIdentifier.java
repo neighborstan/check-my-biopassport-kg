@@ -1,6 +1,7 @@
 package art.evalevi.telegrambot.statuscheckbot.command;
 
 import art.evalevi.telegrambot.statuscheckbot.bot.City;
+import art.evalevi.telegrambot.statuscheckbot.bot.Menu;
 import art.evalevi.telegrambot.statuscheckbot.dto.Passport;
 import art.evalevi.telegrambot.statuscheckbot.service.PassportService;
 import art.evalevi.telegrambot.statuscheckbot.service.SendMessageService;
@@ -31,8 +32,12 @@ public class CommandIdentifier {
 
         Optional<Passport> passport = receivePassportData(textRequest, cityCode);
 
-        if ("/start".equals(textRequest)) {
+        if (Menu.START.getName().equals(textRequest)) {
             command = new StartCommand(sendMessageService);
+        } else if (Menu.HELP.getName().equals(textRequest)) {
+            command = new HelpCommand(sendMessageService);
+        } else if (Menu.CONTACT.getName().equals(textRequest)) {
+            command = new ContactCommand(sendMessageService);
         } else if (City.BISHKEK.name.equals(textRequest)) {
             cityCode = City.BISHKEK.code;
             selectedCity = City.BISHKEK.name;
