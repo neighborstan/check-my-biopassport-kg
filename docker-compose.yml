@@ -19,7 +19,7 @@ services:
     image: postgres:13.3
     restart: 'always'
     environment:
-      POSTGRES_DB: 'service-bot_db'
+      POSTGRES_DB: 'bot_db'
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
 #    volumes:
