@@ -3,6 +3,7 @@ package art.evalevi.telegrambot.statuscheckbot.command;
 import art.evalevi.telegrambot.statuscheckbot.bot.City;
 import art.evalevi.telegrambot.statuscheckbot.bot.Menu;
 import art.evalevi.telegrambot.statuscheckbot.dto.Passport;
+import art.evalevi.telegrambot.statuscheckbot.exception.ServerDoesNotResponseException;
 import art.evalevi.telegrambot.statuscheckbot.service.PassportService;
 import art.evalevi.telegrambot.statuscheckbot.service.SendMessageService;
 import lombok.Getter;
@@ -30,30 +31,33 @@ public class CommandIdentifier {
     public Command findCommand(String textRequest) {
         Command command = new UnknownCommand(sendMessageService);
 
-        Optional<Passport> passport = receivePassportData(textRequest, cityCode);
+        try {
+            Optional<Passport> passport = receivePassportData(textRequest, cityCode);
 
-        if (Menu.START.getName().equals(textRequest)) {
-            command = new StartCommand(sendMessageService);
-        } else if (Menu.HELP.getName().equals(textRequest)) {
-            command = new HelpCommand(sendMessageService);
-        } else if (Menu.CONTACT.getName().equals(textRequest)) {
-            command = new ContactCommand(sendMessageService);
-        } else if (City.BISHKEK.name.equals(textRequest)) {
-            cityCode = City.BISHKEK.code;
-            selectedCity = City.BISHKEK.name;
-            command = new BishkekCityCommand(sendMessageService);
-        } else if (City.OSH.name.equals(textRequest)) {
-            cityCode = City.OSH.code;
-            selectedCity = City.OSH.name;
-            command = new OshCityCommand(sendMessageService);
-        } else if (passport.isPresent()) {
-            command = new NumberCommand(sendMessageService, passport.get());
+            if (passport.isPresent()) {
+                command = new NumberCommand(sendMessageService, passport.get());
+            } else if (Menu.START.getName().equals(textRequest)) {
+                command = new StartCommand(sendMessageService);
+            } else if (Menu.HELP.getName().equals(textRequest)) {
+                command = new HelpCommand(sendMessageService);
+            } else if (Menu.CONTACT.getName().equals(textRequest)) {
+                command = new ContactCommand(sendMessageService);
+            } else if (City.BISHKEK.name.equals(textRequest)) {
+                cityCode = City.BISHKEK.code;
+                selectedCity = City.BISHKEK.name;
+                command = new BishkekCityCommand(sendMessageService);
+            } else if (City.OSH.name.equals(textRequest)) {
+                cityCode = City.OSH.code;
+                selectedCity = City.OSH.name;
+                command = new OshCityCommand(sendMessageService);
+            }
+        } catch (ServerDoesNotResponseException e) {
+            command = new ServerProblemCommand(sendMessageService);
         }
-
         return command;
     }
 
-    private Optional<Passport> receivePassportData(String text, String cityCode) {
+    private Optional<Passport> receivePassportData(String text, String cityCode) throws ServerDoesNotResponseException {
         Optional<Passport> passport = Optional.empty();
 
         if (isID(text)) {

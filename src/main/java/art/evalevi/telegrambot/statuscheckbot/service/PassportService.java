@@ -1,6 +1,7 @@
 package art.evalevi.telegrambot.statuscheckbot.service;
 
 import art.evalevi.telegrambot.statuscheckbot.dto.Passport;
+import art.evalevi.telegrambot.statuscheckbot.exception.ServerDoesNotResponseException;
 import kong.unirest.GenericType;
 import kong.unirest.Unirest;
 import lombok.Getter;
@@ -23,17 +24,28 @@ public class PassportService {
     private String uidUrlTemplate;
 
 
-    public Passport[] getPassportsByIdSync(final String id, String cityCode) {
-        return Unirest.get(String.format(baseUrlTemplate + idUrlTemplate, cityCode, id))
-                .asObject(new GenericType<Passport[]>() {
-                })
-                .getBody();
+    public Passport[] getPassportsByIdSync(final String id, String cityCode) throws ServerDoesNotResponseException {
+        try {
+            return Unirest.get(String.format(baseUrlTemplate + idUrlTemplate, cityCode, id))
+                    .asObject(new GenericType<Passport[]>() {
+                    })
+                    .getBody();
+
+        } catch (Exception e) {
+            log.error("Socket timeout: " + e);
+            throw new ServerDoesNotResponseException();
+        }
     }
 
-    public Passport getPassportByUIDSync(final String id) {
-        return Unirest.get(String.format(baseUrlTemplate + uidUrlTemplate, id))
-                .asObject(new GenericType<Passport>() {
-                })
-                .getBody();
+    public Passport getPassportByUIDSync(final String id) throws ServerDoesNotResponseException {
+        try {
+            return Unirest.get(String.format(baseUrlTemplate + uidUrlTemplate, id))
+                    .asObject(new GenericType<Passport>() {
+                    })
+                    .getBody();
+        } catch (Exception e) {
+            log.error("Socket timeout: " + e);
+            throw new ServerDoesNotResponseException();
+        }
     }
 }
